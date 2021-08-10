@@ -33,6 +33,14 @@ struct Mem
         return Data[Address];
     }
 
+
+    // write 1 byte
+    Byte& operator[] ( u32 Address ) 
+    {
+        // assert here  is < MAX_MEM
+        return Data[Address];
+    }
+
 };
 
 
@@ -91,7 +99,7 @@ struct CPU
             } break;
             default:
             {
-
+                printf("Instruction Not Handled %d", Ins);
             }break;
             }
         }
@@ -105,6 +113,11 @@ int main()
     Mem mem;
     CPU cpu;
     cpu.Reset( mem );
+    printf("CPU Reset~");
+    mem[0xFFFC] = CPU::INS_LDA_IM;
+    mem[0xFFFD] = 0x42;
+
     cpu.Execute( 2, mem );
+    printf("CPU reset!");
     return 0; 
 }
