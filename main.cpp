@@ -87,6 +87,12 @@ struct CPU
     static constexpr Byte
         INS_LDA_IM = 0xA9;
 
+void LDASetStatus
+{
+    Z = (A == 0);
+    N = (A & 0b100000000) > 0;
+};
+
     // Executes instructions
     void Execute(u32 Cycles, Mem &memory)
     {
@@ -98,16 +104,17 @@ struct CPU
             case INS_LDA_IM:
             {
                 Byte Value =
-                    FetchByte(Cycles, memory);
+                FetchByte(Cycles, memory);
                 A = Value;
-                Z = (A == 0);
-                N = (A & 0b100000000) > 0;
+                LDASetStatus
+            
             }
             break;
             case INS_LDA_ZP:
             {
                 Byte ZeroPageAddress = FetchByte(Cycles, memory);
-                ReadByte(ZeroPageAddress, memory);
+                A = ReadByte(ZeroPageAddress, memory);
+                LDASetStatus();
             }
             default:
             {
