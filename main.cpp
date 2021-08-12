@@ -43,11 +43,11 @@ struct Mem
 
 };
 
-
+//* the main thing 
 struct CPU
 {
     Word PC;    //program pointer
-    Word SP;    // stack pointer
+    Byte SP;    // stack pointer
 
 
     Byte A, X, Y;   //registers 
@@ -99,7 +99,7 @@ struct CPU
             } break;
             default:
             {
-                printf("Instruction Not Handled %d", Ins);
+                printf("Instruction Not Handled %d", Ins); //TODO: FIX THIS WEIRD ISSUE
             }break;
             }
         }
