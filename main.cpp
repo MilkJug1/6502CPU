@@ -118,7 +118,7 @@ void LDASetStatus
             }
             default:
             {
-                printf("Instruction Not Handled %d", Ins); //TODO: FIX THIS WEIRD ISSUE
+                printf("Instruction Not Handled %d", Ins); //TODO: FIX THIS WEIRD ISSUE WHERE IT KEEPS SAYING THIS
             }
             break;
             }
