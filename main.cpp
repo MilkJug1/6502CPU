@@ -76,7 +76,7 @@ struct CPU
         return Data;
     }
 
-    Byte Read(u32 Cycles, Mem &memory)
+    Byte ReadByte(u32 Cycles, Mem &memory)
     {
         Byte Data = memory[PC];
         Cycles--;
@@ -86,11 +86,12 @@ struct CPU
     // opcode
     static constexpr Byte
         INS_LDA_IM = 0xA9;
+        INS_LDA_ZP = 0xA5;
 
 void LDASetStatus
 {
     Z = (A == 0);
-    N = (A & 0b100000000) > 0;
+    N = (A & 0b10000000) > 0;
 };
 
     // Executes instructions
@@ -106,7 +107,7 @@ void LDASetStatus
                 Byte Value =
                 FetchByte(Cycles, memory);
                 A = Value;
-                LDASetStatus
+                LDASetStatus();
             
             }
             break;
@@ -134,7 +135,6 @@ int main()
     printf("CPU Reset~");
     mem[0xFFFC] = CPU::INS_LDA_IM;
     mem[0xFFFD] = 0x42;
-
     cpu.Execute(2, mem);
     printf("CPU reset!");
     return 0;
