@@ -106,6 +106,7 @@ void Execute(u32 Cycles, Mem &memory)
     while (Cycles > 0)
     {
         Byte Ins = FetchByte(Cycles, memory);
+        Byte ZeroPageAddress = 0;
         switch (Ins)
         {
         case INS_LDA_IM:
@@ -114,7 +115,8 @@ void Execute(u32 Cycles, Mem &memory)
             break;
 
         case INS_LDA_ZP:
-            ZeroPageAddress(Cycles, Address, memory);
+            ZeroPageAddress = FetchByte(Cycles, memory);
+            A = ReadByte(Cycles, ZeroPageAddress, memory);
             LDASetStatus();
             break;
         default:
