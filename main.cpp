@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 /*
-=======================================
+===========================================
 = Program made by: Michael Crawford
 = Credits goes to Dave Poo on Youtube
 = -for making that tutorial
@@ -76,55 +76,52 @@ struct CPU
         return Data;
     }
 
-    Byte ReadByte(u32 Cycles, Mem &memory)
+    Byte ReadByte(u32& Cycles, Byte Address, Mem& memory)
     {
-        Byte Data = memory[PC];
+        Byte Data = memory[Address];
         Cycles--;
         return Data;
     }
 
     // opcode
     static constexpr Byte
-        INS_LDA_IM = 0xA9;
+        INS_LDA_IM = 0xA9,
         INS_LDA_ZP = 0xA5;
 
-void LDASetStatus
+void LDASetStatus()
 {
     Z = (A == 0);
     N = (A & 0b10000000) > 0;
 };
 
-    // Executes instructions
-    void Execute(u32 Cycles, Mem &memory)
+void ZeroPageAddress(u32& Cycles, Byte& Address, Mem& memory)
+{
+    FetchByte(Cycles, memory);
+    A = ReadByte(Cycles, Address, memory);
+}
+
+// Executes instructions
+void Execute(u32 Cycles, Mem &memory)
+{
+    while (Cycles > 0)
     {
-        while (Cycles > 0)
+        Byte Ins = FetchByte(Cycles, memory);
+        switch (Ins)
         {
-            Byte Ins = FetchByte(Cycles, memory);
-            switch (Ins)
-            {
-            case INS_LDA_IM:
-            {
-                Byte Value =
-                FetchByte(Cycles, memory);
-                A = Value;
-                LDASetStatus();
-            
-            }
+        case INS_LDA_IM:
+            A = FetchByte(Cycles, memory);
+            LDASetStatus();
             break;
-            case INS_LDA_ZP:
-            {
-                Byte ZeroPageAddress = FetchByte(Cycles, memory);
-                A = ReadByte(ZeroPageAddress, memory);
-                LDASetStatus();
-            }
-            default:
-            {
-                printf("Instruction Not Handled %d", Ins); //TODO: FIX THIS WEIRD ISSUE WHERE IT KEEPS SAYING THIS
-            }
+
+        case INS_LDA_ZP:
+            ZeroPageAddress(Cycles, Address, memory);
+            LDASetStatus();
             break;
-            }
+        default:
+            printf("Instruction Not handled %d", Ins);
         }
     }
+}
 };
 
 int main()
@@ -133,7 +130,7 @@ int main()
     CPU cpu;
     cpu.Reset(mem);
     printf("CPU Reset~");
-    mem[0xFFFC] = CPU::INS_LDA_IM;
+    mem[0xFFFC] = CPU::INS_LDA_ZP;
     mem[0xFFFD] = 0x42;
     cpu.Execute(2, mem);
     printf("CPU reset!");
