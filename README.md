@@ -6,10 +6,10 @@ If you are going to make a change please put your username and when you last edi
 
 
 # All that is added right now.
-- [ x ] LDA and ZeroPoint Registers
-- [ x ] somewhat of a hardcoded program
-- [ x ] Mem, reset, fetchbyte, Status flags, program pointer, readbyte, and program counter
-- [  ] the rest of the registers that you can use
-- [  ] emulation support (like being able to test your 6502 programs on this program)
-- [  ] fixing the "Instruction Not Supported" issue and other current bugs. 
-- [  ] introduce the rest of the instructions
+- [x] LDA and ZeroPoint Registers
+- [x] somewhat of a hardcoded program
+- [x] Mem, reset, fetchbyte, Status flags, program pointer, readbyte, and program counter
+- []the rest of the registers that you can use
+- []emulation support (like being able to test your 6502 programs on this program)
+- []fixing the "Instruction Not Supported" issue and other current bugs. 
+- []introduce the rest of the instructions
